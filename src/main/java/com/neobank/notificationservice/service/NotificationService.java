@@ -43,4 +43,12 @@ public class NotificationService {
             }
         });
     }
+
+    public void markAllAsRead(String userId) {
+        notificationRepository.findByUserIdAndStatus(userId, NotificationStatus.SENT)
+                .forEach(notification -> {
+                    notification.setStatus(NotificationStatus.READ);
+                    notificationRepository.save(notification);
+                });
+    }
 }

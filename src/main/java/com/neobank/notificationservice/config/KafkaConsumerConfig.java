@@ -1,5 +1,6 @@
 package com.neobank.notificationservice.config;
 
+import com.neobank.notificationservice.event.AccountCreatedEvent;
 import com.neobank.notificationservice.event.CardCreatedEvent;
 import com.neobank.notificationservice.event.TransactionCompletedEvent;
 import com.neobank.notificationservice.event.TransactionFailedEvent;
@@ -33,6 +34,11 @@ public class KafkaConsumerConfig {
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, UserRegisteredEvent> userRegisteredKafkaListenerContainerFactory() {
         return listenerContainerFactory(UserRegisteredEvent.class);
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, AccountCreatedEvent> accountCreatedKafkaListenerContainerFactory() {
+        return listenerContainerFactory(AccountCreatedEvent.class);
     }
 
     @Bean

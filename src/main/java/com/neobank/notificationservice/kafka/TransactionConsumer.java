@@ -36,5 +36,12 @@ public class TransactionConsumer {
     )
     public void onTransactionFailed(TransactionFailedEvent event) {
         log.info("Received transaction.failed for transaction: {}", event.transactionId());
+        if (event.keycloakUserId() != null) {
+            notificationService.createNotification(
+                    event.keycloakUserId(),
+                    "Transfer failed",
+                    event.reason() != null ? event.reason() : "Your transfer could not be completed."
+            );
+        }
     }
 }

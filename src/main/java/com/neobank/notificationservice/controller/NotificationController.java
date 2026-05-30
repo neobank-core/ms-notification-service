@@ -41,4 +41,11 @@ public class NotificationController {
         notificationService.markAsRead(id, jwt.getSubject());
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/read-all")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> markAllAsRead(@AuthenticationPrincipal Jwt jwt) {
+        notificationService.markAllAsRead(jwt.getSubject());
+        return ResponseEntity.ok().build();
+    }
 }

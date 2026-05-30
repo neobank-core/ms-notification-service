@@ -126,7 +126,7 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>3.0.0</version>
         </dependency>
-    </dependencies>
+</dependencies>
 
     <build>
         <plugins>
@@ -182,3 +182,5 @@
     </build>
 
 </project>
+
+
