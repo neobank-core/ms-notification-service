@@ -1,8 +1,10 @@
 package com.neobank.notificationservice.controller;
 
+import com.neobank.notificationservice.dto.NotificationPreferenceDto;
 import com.neobank.notificationservice.dto.NotificationResponse;
 import com.neobank.notificationservice.entity.Notification;
 import com.neobank.notificationservice.mapper.NotificationMapper;
+import com.neobank.notificationservice.service.NotificationPreferenceService;
 import com.neobank.notificationservice.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class NotificationController {
 
     private final NotificationService notificationService;
+    private final NotificationPreferenceService preferenceService;
     private final NotificationMapper notificationMapper;
 
     @GetMapping("/my")
@@ -48,4 +51,19 @@ public class NotificationController {
         notificationService.markAllAsRead(jwt.getSubject());
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/preferences")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<NotificationPreferenceDto> getPreferences(@AuthenticationPrincipal Jwt jwt) {
+        return ResponseEntity.ok(preferenceService.getPreferences(jwt.getSubject()));
+    }
+
+    @PutMapping("/preferences")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<NotificationPreferenceDto> updatePreferences(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestBody NotificationPreferenceDto request) {
+        return ResponseEntity.ok(preferenceService.updatePreferences(jwt.getSubject(), request));
+    }
+
 }
