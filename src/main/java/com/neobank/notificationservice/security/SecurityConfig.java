@@ -26,19 +26,18 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs",
-                                "/v3/api-docs/**",
-                                "/actuator/health",
-                                "/actuator/info",
-                                "/actuator/prometheus"
-                        ).permitAll()
+                        .requestMatchers((jakarta.servlet.http.HttpServletRequest request) -> {
+                            String uri = request.getRequestURI();
+                            return uri.startsWith("/swagger-ui") ||
+                                   uri.startsWith("/v3/api-docs") ||
+                                   uri.startsWith("/actuator");
+                        }).permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
         return http.build();
     }
+
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
